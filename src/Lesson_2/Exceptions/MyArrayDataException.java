@@ -10,7 +10,7 @@ class MyArrayDataException extends RuntimeException {
     }
 
     /**
-     * Constructs a new <code>ArrayIndexOutOfBoundsException</code>
+     * Constructs a new <code>MyArrayDataException</code>
      * class with an argument indicating the illegal index.
      *
      * @param   i   the first illegal index.

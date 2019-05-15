@@ -16,28 +16,11 @@ public class Main {
     }
 
     public static boolean checkPassword (String password) {
-        ArrayList<String> regexes = new ArrayList<>();
+        String regex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*\\W)(?=.{8,20}$).*";
 
-        regexes.add("[A-Z]+");
-        regexes.add("[a-z]+");
-        regexes.add("\\d+");
-        regexes.add("\\W+");
-        regexes.add("^.{8,20}$");
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(password);
 
-        Iterator iterator = regexes.iterator();
-        boolean goodPassword = true;
-        Pattern pattern;
-        Matcher matcher;
-
-        do {
-            if (!goodPassword) {
-                return false;
-            }
-            pattern = Pattern.compile((String) iterator.next());
-            matcher = pattern.matcher(password);
-            goodPassword = matcher.find();
-        } while (iterator.hasNext());
-
-        return goodPassword;
+        return matcher.find();
     }
 }

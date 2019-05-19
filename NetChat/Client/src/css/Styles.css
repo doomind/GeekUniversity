@@ -1,0 +1,18 @@
+#vBox {
+     -fx-font-family: monospace;
+ }
+
+ #sendMsgBox {
+ }
+
+ #sendMsgButton {
+     -fx-background-color: steelblue;
+     -fx-alignment: center;
+ }
+
+ #sndMsgTextField {
+     -fx-background-color: white;
+ }
+
+ #chatTextArea {
+ }

@@ -3,7 +3,7 @@ package Lesson_5;
 public class Main {
     public static void main(String[] args) {
         final int size = 10000000;
-        final int numberOfThreads = 175;
+        final int numberOfThreads = 20;
         float[] arr = new float[size];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = 1;
@@ -11,9 +11,21 @@ public class Main {
         float[] arr1 = arr.clone();
         float[] arr2 = arr.clone();
 
-        calcArrOne(arr1);
+        arr1 = calcArrOne(arr1);
         System.out.println("------------------------------------");
-        calcArrTwo(arr2, numberOfThreads);
+        arr2 = calcArrTwo(arr2, numberOfThreads);
+
+        boolean arraysEquals = true;
+        for (int i = 0; i < size; i++) {
+            if (arr1[i] != arr2[i]) {
+                arraysEquals = false;
+                System.out.println("Different at " + i + " : arr1[" + i + "]=" + arr1[i] + ", arr2[" + i + "]=" + arr2[i] + ".");
+                break;
+            }
+        }
+        String msg = arraysEquals ? "Arrays are equals" : "Arrays are not equals";
+        System.out.println("------------------------------------");
+        System.out.println(msg);
     }
 
     private static float[] calcArrOne(float[] arr) {
@@ -44,12 +56,12 @@ public class Main {
         long startCutting = System.currentTimeMillis();
         for (int i = 0; i < parts; i++) {
             if (lastPartSize > 0 && i == parts - 1) {
-                System.arraycopy(arr, i * partSize, partsOfArr[i], 0, lastPartSize - 1);
-                calcs[i] = new Calc(partsOfArr[i]);
+                System.arraycopy(arr, i * partSize, partsOfArr[i], 0, lastPartSize);
+                calcs[i] = new Calc(partsOfArr[i], i);
                 calcs[i].start();
             } else {
-                System.arraycopy(arr, i * partSize, partsOfArr[i], 0, partSize - 1);
-                calcs[i] = new Calc(partsOfArr[i]);
+                System.arraycopy(arr, i * partSize, partsOfArr[i], 0, partSize);
+                calcs[i] = new Calc(partsOfArr[i], i);
                 calcs[i].start();
             }
         }
@@ -71,9 +83,9 @@ public class Main {
         for (int i = 0; i < calcs.length; i++) {
             partsOfArr[i] = calcs[i].getResult();
             if (lastPartSize > 0 && i == parts - 1) {
-                System.arraycopy(partsOfArr[i], 0, arr, i * partSize, lastPartSize - 1);
+                System.arraycopy(partsOfArr[i], 0, arr, i * partSize, lastPartSize);
             } else {
-                System.arraycopy(partsOfArr[i], 0, arr, i * partSize, partSize - 1);
+                System.arraycopy(partsOfArr[i], 0, arr, i * partSize, partSize);
             }
         }
         long gluingTime = System.currentTimeMillis() - startGluing;

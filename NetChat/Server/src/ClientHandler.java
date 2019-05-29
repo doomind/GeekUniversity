@@ -13,7 +13,7 @@ public class ClientHandler implements Runnable {
     private MainServer server;
     private String nick;
 
-    public ClientHandler(Socket socket, MainServer server) {
+    ClientHandler(Socket socket, MainServer server) {
         try {
             this.socket = socket;
             this.server = server;
@@ -56,15 +56,16 @@ public class ClientHandler implements Runnable {
                     out.writeUTF("/serverClosed");
                     break;
                 // Реализация whisper
-                } else if (str.matches("^\\/w \\w+ [\\w\\W\\s]*$")) {
-                    String regex = "^\\/w\\s(?<nickName>[a-zA-Z0-9]+)\\s(?<message>.*)$";
+                } else if (str.matches("^/w \\w+ [\\w\\W\\s]*$")) {
+                    String regex = "^/w\\s(?<nickName>[a-zA-Z0-9]+)\\s(?<message>.*)$";
                     Pattern pattern = Pattern.compile(regex);
                     Matcher matcher = pattern.matcher(str);
-                    matcher.find();
-                    String nickName = matcher.group("nickName");
-                    String message = matcher.group("message");
-                    String msg = nick + ": " + message;
-                    server.unicastMsg(nickName, msg);
+                    if (matcher.find()) {
+                        String nickName = matcher.group("nickName");
+                        String message = matcher.group("message");
+                        String msg = nick + ": " + message;
+                        server.unicastMsg(nickName, msg);
+                    }
                 } else {
                     server.broadcastMsg(nick + ": " + str);
                 }
@@ -91,11 +92,15 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendMsg(String msg) {
+    void sendMsg(String msg) {
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    String getNick() {
+        return nick;
     }
 }

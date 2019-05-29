@@ -1,11 +1,11 @@
 import java.sql.*;
 
-public class AuthService {
+class AuthService {
 
     private static Connection connection;
     private static Statement stmt;
 
-    public static void connect() throws SQLException {
+    static void connect() throws SQLException {
         try {
             // обращение к драйверу
             Class.forName("org.sqlite.JDBC");
@@ -18,7 +18,7 @@ public class AuthService {
         }
     }
 
-    public static String getNickByLoginAndPass(String login, String pass) {
+    static String getNickByLoginAndPass(String login, String pass) {
         // формирование запроса
         String sql = String.format("SELECT nickname FROM main where login = '%s' and password = '%s'", login, pass);
 
@@ -38,7 +38,7 @@ public class AuthService {
         return null;
     }
 
-    public static void disconnect() {
+    static void disconnect() {
         try {
             // закрываем соединение
             connection.close();

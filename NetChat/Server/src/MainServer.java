@@ -5,11 +5,11 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class MainServer {
+class MainServer {
 
     private Vector<ClientHandler> clients;
 
-    public MainServer() throws SQLException {
+MainServer() throws SQLException {
         ServerSocket server = null;
         Socket socket = null;
         clients = new Vector<>();
@@ -45,22 +45,22 @@ public class MainServer {
     }
 
     // подписываем клиента на рассылку
-    public synchronized void subscribe(ClientHandler client) {
+    void subscribe(ClientHandler client) {
         clients.add(client);
     }
 
     // отписываем клиента от рассылки сообщений
-    public synchronized void unsubscribe(ClientHandler client){
+    synchronized void unsubscribe(ClientHandler client){
         clients.remove(client);
     }
 
-    public void broadcastMsg(String msg) {
+    void broadcastMsg(String msg) {
         for (ClientHandler o: clients) {
             o.sendMsg(msg);
         }
     }
 
-    public void unicastMsg(String nickName, String msg) {
+    void unicastMsg(String nickName, String msg) {
         for (ClientHandler o: clients) {
             if (o.getNick().equals(nickName)) {
                 o.sendMsg(msg);
